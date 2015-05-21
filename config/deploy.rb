@@ -1,12 +1,12 @@
-set :application, 'app_name'
-set :deploy_user, 'deploy'
+set :application, 'cap-deploy-test-apps'
+set :deploy_user, 'root'
 
 # setup repo details
 set :scm, :git
-set :repo_url, 'git@github.com:username/repo.git'
+set :repo_url, 'git@github.com:adityapratama/cap-deploy-test-apps.git'
 
 # setup rbenv.
-set :rbenv_type, :system
+set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, '2.2.1'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
@@ -31,10 +31,18 @@ set(:config_files, %w(
   nginx.conf
   database.example.yml
   log_rotation
-  monit
   unicorn.rb
   unicorn_init.sh
 ))
+
+#set(:config_files, %w(
+#  nginx.conf
+#  database.example.yml
+#  log_rotation
+#  monit
+#  unicorn.rb
+#  unicorn_init.sh
+#))
 
 # which config files should be made executable after copying
 # by deploy:setup_config
@@ -76,7 +84,7 @@ namespace :deploy do
   # make sure we're deploying what we think we're deploying
   before :deploy, "deploy:check_revision"
   # only allow a deploy with passing tests to deployed
-  before :deploy, "deploy:run_tests"
+  # before :deploy, "deploy:run_tests"
   # compile assets locally then rsync
   after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :finishing, 'deploy:cleanup'
