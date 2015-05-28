@@ -5,6 +5,8 @@ set :deploy_user, 'root'
 set :scm, :git
 set :repo_url, 'git@github.com:adityapratama/cap-deploy-test-apps.git'
 
+set :pty, true
+
 # setup rbenv.
 set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, '2.2.1'
@@ -29,7 +31,7 @@ set :tests, []
 # for details of operations
 set(:config_files, %w(
   nginx.conf
-  database.example.yml
+  database.yml
   log_rotation
   unicorn.rb
   unicorn_init.sh
@@ -68,11 +70,12 @@ set(:symlinks, [
   {
     source: "log_rotation",
    link: "/etc/logrotate.d/{{full_app_name}}"
-  },
-  {
-    source: "monit",
-    link: "/etc/monit/conf.d/{{full_app_name}}.conf"
   }
+  #,
+  #{
+  #  source: "monit",
+  #  link: "/etc/monit/conf.d/{{full_app_name}}.conf"
+  #}
 ])
 
 # this:
@@ -99,7 +102,7 @@ namespace :deploy do
 
   # Restart monit so it will pick up any monit configurations
   # we've added
-  after 'deploy:setup_config', 'monit:restart'
+  #after 'deploy:setup_config', 'monit:restart'
 
   # As of Capistrano 3.1, the `deploy:restart` task is not called
   # automatically.

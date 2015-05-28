@@ -3,6 +3,7 @@ config/deploy/test.rb
 config/database.yml
 config/secrets.yml
 
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp
